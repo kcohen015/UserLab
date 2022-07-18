@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Login</h1>
+    <form class="LoginForm" [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+
+        <label for="userName" class="user">UserName: </label>
+        <input type="text" class="user" formControlName="userName">
+        <div class="errors" *ngIf="userName && userName?.invalid && userName?.touched">Invalid Field</div>
+        <div class="errors" *ngIf="userName && userName?.errors?.['required'] && userName?.touched">Required Field
+        </div>
+        <div class="errors" *ngIf="userName && userName?.errors?.['minlength'] && userName?.touched">Min 6 Characters
+            Required
+        </div>
+        <div class="errors" *ngIf="userName && userName?.errors?.['pattern'] && userName?.touched">Must contain letters
+            and numbers. No special characters.
+        </div>
+        <br>
+
+        <label for="passWord" class="pw">Password: </label>
+        <input type="password" class="user" formControlName="passWord">
+        <div class="errors" *ngIf="passWord && passWord?.invalid && passWord?.touched">Invalid Field</div>
+        <div class="errors" *ngIf="passWord && passWord?.errors?.['required'] && passWord?.touched">Required Field
+        </div>
+        <div class="errors" *ngIf="passWord && passWord?.errors?.['minlength'] && passWord?.touched">Min 6 Characters
+            Required
+        </div>
+        <div class="errors" *ngIf="passWord && passWord?.errors?.['pattern'] && passWord?.touched">
+            Password must be:
+            At least 1 Uppercase
+            At least 1 Lowercase
+            At least 1 Number
+            At least 1 Symbol, symbols allowed --> !@#$%^&*_=+-
+            Min 6 chars and Max 10 chars
+        </div>
+        <br>
+
+        <button [disabled]="LoginForm.pristine || LoginForm.invalid">Submit</button>
+    </form>
+</div>
