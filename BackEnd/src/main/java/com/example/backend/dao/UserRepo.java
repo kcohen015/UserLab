@@ -19,7 +19,7 @@ public class UserRepo implements UserDAO{
     private static List<User> users = new ArrayList<>();
 
     @Override
-    public int insertUser(String uName, User user) {
+    public int createUser(String uName, User user) {
         String sql = "INSERT INTO USERS (UNAME, PWORD) VALUES (?,?)";
         return jdbcTemplate.update(sql, new Object[]{user.getuName(), user.getpWord()});
     }
@@ -44,12 +44,25 @@ public class UserRepo implements UserDAO{
     }
 
     @Override
-    public Optional<User> queryUser(String uName) {
+    public User validateLogin(String uname, String pword) {
+        String sql= "SELECT UNAME, PWORD FROM USERS WHERE UNAME=?";
+        User user = jdbcTemplate.queryForObject(sql,
+                BeanPropertyRowMapper.newInstance(User.class), uname);
+        if(user != null){
+            if(user.getpWord().equals(pword)){
+                return user;
+            }
+        }
+        return new User(0,"no match","no match");
+    }
+
+    @Override
+    public Optional<User> queryUser(String uname) {
         User user = null;
         try {
             String sql = "SELECT * FROM USERS WHERE UNAME=?";
             user = jdbcTemplate.queryForObject(sql,
-                    BeanPropertyRowMapper.newInstance(User.class), uName);
+                    BeanPropertyRowMapper.newInstance(User.class), uname);
             return Optional.ofNullable(user);
         } catch (IncorrectResultSizeDataAccessException e) {
             return Optional.ofNullable(user);

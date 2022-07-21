@@ -3,20 +3,22 @@ package com.example.backend.api;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("users/")
-public class Controller {
+@RequestMapping(value="users/")
+public class UserController {
     private final UserService userService;
 
     @Autowired
-    public Controller(UserService userService){this.userService = userService;}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE)
     int insertUser(@RequestBody User user){
@@ -25,7 +27,7 @@ public class Controller {
 
     @PutMapping(value="{uname}")
     int updateUser(@PathVariable("uname") String uname,@RequestBody User user){
-        return userService.updateUser(uname,user);
+        return userService.UpdateUser(uname,user);
     }
     @DeleteMapping(value="{uname}")
     int deleteUser(@PathVariable("uname") String uname){
@@ -35,8 +37,9 @@ public class Controller {
     List<User> queryUsers(){
         return userService.queryUsers();
     }
-    @GetMapping(value = "{uname}")
-    Optional<User> queryUser(@PathVariable("uname") String uname){
-        return userService.queryUser(uname);
+    @GetMapping(value="login/{uname}/{pword}")
+    User validateLogin(@PathVariable("uname") String uname,
+                       @PathVariable("pword") String pword){
+        return userService.validateLogin(uname,pword);
     }
 }

@@ -8,15 +8,17 @@ import java.util.Random;
 
 public interface UserDAO {
 
-    default int insertUser( User user) {
+    default int createUser(User user) {
         Random rand = new Random();
         int uid = rand.nextInt();
-        return insertUser(String.valueOf(uid), user);
+        return createUser(String.valueOf(uid), user);
     }
-    int insertUser(String uname, User user);
+    int createUser(String uname, User user);
     int updateUser(String uname, User user);
     int deleteUser(String uname);
     List<User> queryUsers();
     Optional<User> queryUser(String uname);
+
+    User findUserByName(String uname);
 }
 
